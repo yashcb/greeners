@@ -71,4 +71,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 /.vscode
-/Assets/Art
+**.vsconfig
+**.psd
+**psd.meta
