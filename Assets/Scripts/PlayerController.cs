@@ -8,6 +8,7 @@ public class PlayerController : PhysicsObject
     public float maxSpeed = 7;
     public float jumpTakeOffSpeed = 7;
     private Animator animator;
+    private bool isAttacking;
 
     void Awake(){
         animator = GetComponent<Animator>();                
@@ -35,9 +36,18 @@ public class PlayerController : PhysicsObject
         }
         transform.localScale = characterScale;
 
+        
+        if (Input.GetButtonDown("Fire1"))
+        {
+            isAttacking = true;
+        }
+        else if(Input.GetButtonUp("Fire1"))
+            isAttacking = false;
+
         animator.SetBool("grounded", grounded);
         animator.SetFloat("velocityX", Mathf.Abs(velocity.x )/ maxSpeed);
         animator.SetFloat("velocityY", Mathf.Abs(velocity.y ));
+        animator.SetBool("isAttacking", isAttacking);
         targetVelocity = move * maxSpeed;
     }
 }
