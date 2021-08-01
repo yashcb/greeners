@@ -10,10 +10,19 @@ public class PlayerController : PhysicsObject
     private Animator animator;
     private bool isAttacking;
 
-    void Awake(){
-        animator = GetComponent<Animator>();                
+    void Awake() {
+        animator = GetComponent<Animator>();
     }
 
+    private static PlayerController instance;
+    public static PlayerController Instance
+    {
+        get
+        {
+            if (instance == null) instance = GameObject.FindObjectOfType<PlayerController>();
+            return instance;
+        }
+    }
     protected override void ComputeVelocity()
     {
         Vector2 move = Vector2.zero;
@@ -26,11 +35,11 @@ public class PlayerController : PhysicsObject
         }
 
         Vector3 characterScale = transform.localScale;
-        if (Input.GetAxis("Horizontal") < 0)
+        if (move.x < 0)
         {
             characterScale.x = -1;
         } 
-        if (Input.GetAxis("Horizontal") > 0)
+        if (move.x > 0)
         {
             characterScale.x = 1;
         }
