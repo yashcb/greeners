@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 224877148}
   - component: {fileID: 224877149}
   - component: {fileID: 224877150}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,7 @@ GameObject:
   m_Component:
   - component: {fileID: 376995595}
   - component: {fileID: 376995596}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Frame1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,7 +426,7 @@ GameObject:
   - component: {fileID: 663161723}
   - component: {fileID: 663161722}
   - component: {fileID: 663161724}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bg4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +522,7 @@ GameObject:
   - component: {fileID: 1035268293}
   - component: {fileID: 1035268292}
   - component: {fileID: 1035268294}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: sky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -685,7 +685,7 @@ GameObject:
   - component: {fileID: 1141144260}
   - component: {fileID: 1141144259}
   - component: {fileID: 1141144261}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -781,7 +781,7 @@ GameObject:
   - component: {fileID: 1188948903}
   - component: {fileID: 1188948902}
   - component: {fileID: 1188948904}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bg1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -877,7 +877,7 @@ GameObject:
   - component: {fileID: 1225816920}
   - component: {fileID: 1225816919}
   - component: {fileID: 1225816921}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: foreground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1140,7 +1140,7 @@ GameObject:
   - component: {fileID: 2069038418}
   - component: {fileID: 2069038417}
   - component: {fileID: 2069038419}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: bg3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1236,7 +1236,7 @@ GameObject:
   - component: {fileID: 2105537237}
   - component: {fileID: 2105537236}
   - component: {fileID: 2105537238}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pathway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
