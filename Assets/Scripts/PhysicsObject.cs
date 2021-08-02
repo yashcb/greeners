@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhysicsObject : MonoBehaviour
 {
-       public float minGroundNormalY = .65f;
+    public float minGroundNormalY = .65f;
     public float gravityModifier = 1f;
 
     protected Vector2 targetVelocity;
@@ -14,7 +14,7 @@ public class PhysicsObject : MonoBehaviour
     protected Vector2 velocity;
     protected ContactFilter2D contactFilter;
     protected RaycastHit2D[] hitBuffer = new RaycastHit2D[16];
-    protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D> (16);
+    protected List<RaycastHit2D> hitBufferList = new List<RaycastHit2D>(16);
 
 
     protected const float minMoveDistance = 0.001f;
