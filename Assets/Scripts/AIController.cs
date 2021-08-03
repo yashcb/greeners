@@ -19,6 +19,7 @@ public class AIController : PhysicsObject
     //[SerializeField] private LayerMask layerMask;
     private RaycastHit2D leftLedge;
     private RaycastHit2D rightLedge;
+   // private bool isSuccsess = false;
 
     public void Start()
     {
@@ -80,22 +81,17 @@ public class AIController : PhysicsObject
         // Check for ledges
         if (!followPlayer)
         {
-            // Left ledge
-            leftLedge =
-                Physics2D.Raycast(new Vector2(transform.position.x - rayCastOffset.x, transform.position.y), Vector2.down, .5f);
-            Debug.DrawRay(new Vector2(transform.position.x - rayCastOffset.x, transform.position.y), Vector2.down, Color.blue);
-
-            if (leftLedge.collider == null)
-            { aiDirection = 1; }
-
             // Right ledge
-            rightLedge =
-                Physics2D.Raycast(new Vector2(transform.position.x + rayCastOffset.x, transform.position.y), Vector2.down, .5f);
+            rightLedge = Physics2D.Raycast(new Vector2(transform.position.x + rayCastOffset.x, transform.position.y), Vector2.down, .5f);
             Debug.DrawRay(new Vector2(transform.position.x + rayCastOffset.x, transform.position.y), Vector2.down, Color.blue);
-
             if (rightLedge.collider == null)
             { aiDirection = -1; }
 
+            // Left ledge
+            leftLedge = Physics2D.Raycast(new Vector2(transform.position.x - rayCastOffset.x, transform.position.y), Vector2.down, .5f);
+            Debug.DrawRay(new Vector2(transform.position.x - rayCastOffset.x, transform.position.y), Vector2.down, Color.blue);
+            if (leftLedge.collider == null)
+            { aiDirection = 1; }
         }
 
         // Movement

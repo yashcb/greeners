@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 224877148}
   - component: {fileID: 224877149}
   - component: {fileID: 224877150}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -286,8 +286,8 @@ MonoBehaviour:
   aiDirection: 1
   aiChangeDirectionEase: 1
   aiAnimator: {fileID: 504176982}
-  followRange: 10
-  rayCastOffset: {x: 0.3, y: 0}
+  followRange: 5
+  rayCastOffset: {x: 0.5, y: 0}
 --- !u!95 &504176982 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 7049261409233051987, guid: af5d0c3948025a04885ae76395731855, type: 3}
@@ -1236,7 +1236,7 @@ GameObject:
   - component: {fileID: 2105537237}
   - component: {fileID: 2105537236}
   - component: {fileID: 2105537238}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: pathway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1444,11 +1444,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5138435340053310834, guid: af5d0c3948025a04885ae76395731855, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.9
+      value: 8.74
       objectReference: {fileID: 0}
     - target: {fileID: 5138435340053310834, guid: af5d0c3948025a04885ae76395731855, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -10.4
+      value: -10.359
       objectReference: {fileID: 0}
     - target: {fileID: 5138435340053310834, guid: af5d0c3948025a04885ae76395731855, type: 3}
       propertyPath: m_LocalPosition.z
