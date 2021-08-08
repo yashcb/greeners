@@ -4,22 +4,25 @@ using UnityEngine;
 
 public class AIController : PhysicsObject
 {
-    [SerializeField] enum EnemyType { Bug, Zombie };
-    [SerializeField] EnemyType enemy;
+   
     public float aiMaxSpeed = 7;
     public float aiDirection = 1;
     public float aiChangeDirectionEase = 1;
+    public float followRange;
+    public GameObject attackHitBox;
+ 
+    [SerializeField] enum EnemyType { Bug, Zombie };
+    [SerializeField] EnemyType enemy;
+    [SerializeField] private Animator aiAnimator;
+    [SerializeField] private Vector2 rayCastOffset;
     private float aiDirectionSmooth = 1;
     private float playerDifference;
-    [SerializeField] private Animator aiAnimator;
-
     private bool followPlayer;
-    public float followRange;
-    [SerializeField] private Vector2 rayCastOffset;
-    //[SerializeField] private LayerMask layerMask;
     private RaycastHit2D leftLedge;
     private RaycastHit2D rightLedge;
-   // private bool isSuccsess = false;
+    private int enemyHealth = 1;
+    public static bool isAttacking = false;
+    public float attackInterval;
 
     public void Start()
     {
@@ -34,7 +37,11 @@ public class AIController : PhysicsObject
 
     protected override void ComputeVelocity()
     {
-        // Direction
+        if (attackInterval > 0)
+        {
+            attackInterval -= Time.deltaTime;
+        }
+
         Vector2 aiMove = Vector2.zero;
         playerDifference = PlayerController.Instance.gameObject.transform.position.x - transform.position.x;
         aiDirectionSmooth += (aiDirection - aiDirectionSmooth) * Time.deltaTime * aiChangeDirectionEase;
@@ -73,9 +80,7 @@ public class AIController : PhysicsObject
                 aiDirection = 1;
         }
         else
-        {
-            aiDirectionSmooth = aiDirection;
-        }
+        {   aiDirectionSmooth = aiDirection; }
 
 
         // Check for ledges
@@ -93,9 +98,50 @@ public class AIController : PhysicsObject
             if (leftLedge.collider == null)
             { aiDirection = 1; }
         }
+        
+
+        if (isAttacking && attackInterval <= 0)
+        {
+            aiAnimator.SetBool("isAttacking", true);
+        }
+        else
+            aiAnimator.SetBool("isAttacking", false);
 
         // Movement
-        aiAnimator.SetFloat("velocityx", Mathf.Abs(velocity.x) / aiMaxSpeed);
-        targetVelocity = aiMove * aiMaxSpeed;
+        if (isAttacking)
+        {   targetVelocity = Vector2.zero;  }
+        else
+        {
+            aiAnimator.SetFloat("velocityx", Mathf.Abs(velocity.x) / aiMaxSpeed);
+            targetVelocity = aiMove * aiMaxSpeed;
+        }
+       
     }
+
+    public void Hit()
+    {
+        Debug.Log(gameObject.name + " was hit");
+        if (enemyHealth <= 0)
+        {
+            aiAnimator.SetTrigger("hurt");
+            Die();
+        }
+        else
+            enemyHealth -= 1;
+    }
+
+    public void  PlayerHurt()
+    {
+        PlayerController.Instance.Hit();
+    }
+
+    public void Die()
+    {
+        Debug.Log("Enemy died!");
+        gameObject.GetComponent<Collider2D>().enabled = false;
+       // Destroy(gameObject);
+    }
+
+    
+
 }
