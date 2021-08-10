@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == 6 && AIController.EnemyInstance.hasDied == false)
         {
-            AIController.isAttacking = true;
+            AIController.EnemyInstance.isAttacking= true;
         }
     }
 
@@ -16,7 +17,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (collision.gameObject.layer == 6)
         {
-            AIController.isAttacking = false;
+            AIController.EnemyInstance.isAttacking = false;
         }
     }
 }
