@@ -9,7 +9,6 @@ public class AIController : PhysicsObject
     public float aiDirection = 1;
     public float aiChangeDirectionEase = 1;
     public float followRange;
-    public GameObject attackHitBox;
 
     [SerializeField] public enum EnemyType { Bug, Zombie };
     [SerializeField] public EnemyType enemy;
@@ -21,8 +20,8 @@ public class AIController : PhysicsObject
     private RaycastHit2D leftLedge;
     private RaycastHit2D rightLedge;
     public int enemyHealth = 1;
-    public bool isAttacking = false;
-    public bool hasDied = false;
+    private bool isAttacking = false;
+   
 
     static AIController enemyInstance;
     public static AIController EnemyInstance
@@ -33,6 +32,9 @@ public class AIController : PhysicsObject
             return enemyInstance;
         }
     }
+
+    public delegate void EnemyKilled();
+    public static event EnemyKilled OnEnemyKilled;
 
     public void Start()
     {
@@ -47,8 +49,7 @@ public class AIController : PhysicsObject
 
     protected override void ComputeVelocity()
     {
-        if (!hasDied)
-        {
+       
             Vector2 aiMove = Vector2.zero;
             playerDifference = PlayerController.Instance.gameObject.transform.position.x - transform.position.x;
             aiDirectionSmooth += (aiDirection - aiDirectionSmooth) * Time.deltaTime * aiChangeDirectionEase;
@@ -122,36 +123,16 @@ public class AIController : PhysicsObject
                 aiAnimator.SetFloat("velocityx", Mathf.Abs(velocity.x) / aiMaxSpeed);
                 targetVelocity = aiMove * aiMaxSpeed;
             }
-        }
+        
     }
 
     public void Hit()
     {
+        //CameraEffect.cameraInstance.CameraShakeEffect(5f, .1f);
         enemyHealth -= 1;
         Debug.Log(gameObject.name + " was hit");
         if (enemyHealth <= 0)
-        {
-            hasDied = true;
-            Destroy(attackHitBox);
-            Die();
-        } 
-    }
-
-    public void Die()
-    {
-        //aiAnimator.SetBool("hasDied", hasDied);
-        aiAnimator.SetTrigger("hurt");
-        Debug.Log(gameObject.name + " DIED!");
-        //DisableEnemy();
-        StartCoroutine(DisableEnemy());
-    }
-
-    IEnumerator DisableEnemy()
-    {
-        gameObject.GetComponent<Rigidbody2D>().simulated = false;
-        //gameObject.GetComponent<AIController>().enabled = false;
-        yield return new WaitForSeconds(2f);
-        gameObject.SetActive(false);
+            Die(); 
     }
 
     public void PlayerHurt()
@@ -159,4 +140,39 @@ public class AIController : PhysicsObject
         PlayerController.Instance.Hit();
     }
 
+    public void Die()
+    {
+        
+        aiAnimator.SetTrigger("hurt");
+        Debug.Log(gameObject.name + " DIED!");
+        
+        StartCoroutine(DisableEnemy());
+        
+        if(OnEnemyKilled != null)
+        {   OnEnemyKilled();    }
+    }
+
+    IEnumerator DisableEnemy()
+    {
+        gameObject.GetComponent<Rigidbody2D>().simulated = false;
+        
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            isAttacking = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 6)
+        {
+            isAttacking = false;
+        }
+    }
 }

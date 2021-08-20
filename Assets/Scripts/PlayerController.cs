@@ -16,6 +16,7 @@ public class PlayerController : PhysicsObject
     public int playerMaxHealth;
     private float playerAttackRange;
     public float maxAttackRange;
+    public bool canMove;
 
     public static PlayerController Instance
     {
@@ -30,6 +31,7 @@ public class PlayerController : PhysicsObject
     {
         playerHealth = playerMaxHealth;
         animator = GetComponent<Animator>();
+        canMove = true;
     }
 
     private void OnDrawGizmosSelected()
@@ -38,52 +40,58 @@ public class PlayerController : PhysicsObject
     }
 
     protected override void ComputeVelocity()
-    {    
-        Vector2 move = Vector2.zero;
-
-        move.x = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump") && grounded)
+    {
+        if (canMove)
         {
-            velocity.y = jumpTakeOffSpeed;
+            Vector2 move = Vector2.zero;
+
+            move.x = Input.GetAxis("Horizontal");
+            if (Input.GetButtonDown("Jump") && grounded)
+            {
+                velocity.y = jumpTakeOffSpeed;
+            }
+
+            Vector3 characterScale = transform.localScale;
+
+            if (move.x < 0)
+            { characterScale.x = -1; }
+            if (move.x > 0)
+            { characterScale.x = 1; }
+            transform.localScale = characterScale;
+
+            if (Input.GetButtonDown("Fire1"))
+                isAttacking = true;
+
+            else if (Input.GetButtonUp("Fire1"))
+                isAttacking = false;
+
+            animator.SetBool("isAttacking", isAttacking);
+            animator.SetBool("grounded", grounded);
+            animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
+            animator.SetFloat("velocityY", Mathf.Abs(velocity.y));
+
+            targetVelocity = move * maxSpeed;
         }
-
-        Vector3 characterScale = transform.localScale;
-
-        if (move.x < 0)
-        {   characterScale.x = -1;  }
-        if (move.x > 0)
-        {   characterScale.x = 1;   }
-        transform.localScale = characterScale;
-
-        if (Input.GetButtonDown("Fire1"))
-            isAttacking = true;
-          
-        else if (Input.GetButtonUp("Fire1"))
-            isAttacking = false;
-
-        animator.SetBool("isAttacking", isAttacking);
-        animator.SetBool("grounded", grounded);
-        animator.SetFloat("velocityX", Mathf.Abs(velocity.x) / maxSpeed);
-        animator.SetFloat("velocityY", Mathf.Abs(velocity.y));
-        
-        targetVelocity = move * maxSpeed;
-
-        playerAttackRange = AIController.EnemyInstance.gameObject.transform.position.x - transform.position.x;
+        else
+        {
+            targetVelocity = Vector2.zero;
+        }
+            playerAttackRange = AIController.EnemyInstance.gameObject.transform.position.x - transform.position.x;
     }
 
    
     public void Hit()
     {
+        playerHealth -= 1;
         if (playerHealth <= 0)
             Die();
 
-        Debug.Log(gameObject.name + " was hit!");
-        playerHealth -= 1;
+        Debug.Log(gameObject.name + " was hit!"); 
     }
 
    public void EnemyHurt()
    {
-        if (AIController.EnemyInstance.hasDied == false && Mathf.Abs(playerAttackRange) <= maxAttackRange && isAttacking)
+        if (Mathf.Abs(playerAttackRange) <= maxAttackRange && isAttacking)
         {
             AIController.EnemyInstance.Hit();
         }
